@@ -1,2 +1,2 @@
-public class Component {
+public class Component {   //组件
 }

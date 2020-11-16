@@ -1,2 +1,2 @@
-public class Checkerboard {
+public class Checkerboard {    //棋盘
 }

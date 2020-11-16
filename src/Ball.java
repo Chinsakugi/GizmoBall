@@ -1,3 +1,3 @@
-public class Ball extends Component implements Toolbar{
+public class Ball extends Component{  //弹球
     
 }
