@@ -6,4 +6,9 @@ public class Point {  //点
         this.x = x;
         this.y = y;
     }
+
+    public void setPoint(int x, int y){    //修改点坐标
+        this.x = x;
+        this.y = y;
+    }
 }

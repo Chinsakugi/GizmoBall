@@ -42,8 +42,18 @@ public class Triangle extends Component{    //三角形组件
     }
 
     public void zoomIn() {  //缩小
+        int a = (p3.x- p1.x)/2;
+        p2.y = p2.y - a;
+        p3.setPoint(p3.x-a,p3.y-a);
+        centerPoint.x = (p1.x+ p3.x)/2;
+        centerPoint.y = (p1.y+ p3.y)/2;
     }
 
     public void zoomOut() { //放大
+        int a = p3.x- p1.x;  //直角边长
+        p2.y = p2.y + a;
+        p3.setPoint(p3.x+a,p3.y+a);
+        centerPoint.x = (p1.x+ p3.x)/2;
+        centerPoint.y = (p1.y+ p3.y)/2;
     }
 }

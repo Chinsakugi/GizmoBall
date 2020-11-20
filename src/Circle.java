@@ -22,9 +22,11 @@ public class Circle extends Component{   //圆形组件
     }
 
     public void zoomIn() {  //缩小
+        radius = radius / 2;
     }
 
     public void zoomOut() { //放大
+        radius = radius * 2;
     }
 
 }
