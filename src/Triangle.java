@@ -1,7 +1,8 @@
 public class Triangle extends Component{    //三角形组件
-    private Point p1;  //三角形三个顶点
-    private Point p2;
-    private Point p3;
+    private Point p1;  //三角形三个顶点   p1
+    private Point p2;               //   |\
+    private Point p3;               //   | \
+                                    // p2|__\ p3
 
     public Triangle(Point p1, Point p2, Point p3){
         this.p1 = p1;
@@ -36,6 +37,28 @@ public class Triangle extends Component{    //三角形组件
     }
 
     public void rotate() {  //旋转
+        int a = p3.x - p1.x;  //三角形直角边长
+
+        if (p1.y>p2.y){    //根据三角形的不同状态分不同的情况
+            p1.x += a;
+            p2.y -= a;
+            p3.x -= a;
+        }
+        else if (p2.y>p3.y){
+            p1.y += a;
+            p2.x += a;
+            p3.y -= a;
+        }
+        else if (p2.y>p1.y){
+            p1.x -= a;
+            p2.y += a;
+            p3.x += a;
+        }
+        else if (p3.y>p2.y){
+            p1.y -= a;
+            p2.x -= a;
+            p3.y += a;
+        }
     }
 
     public void remove() {  //删除
