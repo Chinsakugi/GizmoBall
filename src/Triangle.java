@@ -37,24 +37,24 @@ public class Triangle extends Component{    //三角形组件
     }
 
     public void rotate() {  //旋转
-        int a = p3.x - p1.x;  //三角形直角边长
+        int a = Math.abs(p3.x - p1.x);  //三角形直角边长
 
-        if (p1.y>p2.y){    //根据三角形的不同状态分不同的情况
+        if (p1.y<p2.y){    //根据三角形的不同状态分不同的情况
             p1.x += a;
             p2.y -= a;
             p3.x -= a;
         }
-        else if (p2.y>p3.y){
+        else if (p2.y<p3.y){
             p1.y += a;
             p2.x += a;
             p3.y -= a;
         }
-        else if (p2.y>p1.y){
+        else if (p2.y<p1.y){
             p1.x -= a;
             p2.y += a;
             p3.x += a;
         }
-        else if (p3.y>p2.y){
+        else if (p3.y<p2.y){
             p1.y -= a;
             p2.x -= a;
             p3.y += a;
@@ -65,17 +65,45 @@ public class Triangle extends Component{    //三角形组件
     }
 
     public void zoomIn() {  //缩小
-        int a = (p3.x- p1.x)/2;
-        p2.y = p2.y - a;
-        p3.setPoint(p3.x-a,p3.y-a);
+        int a = Math.abs((p3.x- p1.x)/2);
+        if (p1.y<p2.y){           //根据三角形的不同状态分不同的情况
+            p1.y += a;
+            p3.x -= a;
+        }
+        else if (p2.y<p3.y){
+            p1.x -= a;
+            p3.y -= a;
+        }
+        else if (p2.y<p1.y){
+            p1.y -= a;
+            p3.x += a;
+        }
+        else if (p3.y<p2.y){
+            p1.x += a;
+            p3.y += a;
+        }
         centerPoint.x = (p1.x+ p3.x)/2;
         centerPoint.y = (p1.y+ p3.y)/2;
     }
 
     public void zoomOut() { //放大
-        int a = p3.x- p1.x;  //直角边长
-        p2.y = p2.y + a;
-        p3.setPoint(p3.x+a,p3.y+a);
+        int a = Math.abs(p3.x- p1.x);  //直角边长
+        if (p1.y<p2.y){    //根据三角形的不同状态分不同的情况,直角顶点坐标不变
+            p1.y -= a;
+            p3.x += a;
+        }
+        else if (p2.y<p3.y){
+            p1.x += a;
+            p3.y += a;
+        }
+        else if (p2.y<p1.y){
+            p1.y += a;
+            p3.x -= a;
+        }
+        else if (p3.y<p2.y){
+            p1.x -= a;
+            p3.y -= a;
+        }
         centerPoint.x = (p1.x+ p3.x)/2;
         centerPoint.y = (p1.y+ p3.y)/2;
     }
