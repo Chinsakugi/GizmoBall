@@ -36,5 +36,6 @@ public class Ball extends Component{  //弹球
     }
 
     public void move(){  //小球移动一个时间单位
+        this.centerPoint.setPoint(centerPoint.x+x_speed,centerPoint.y+y_speed);
     }
 }
