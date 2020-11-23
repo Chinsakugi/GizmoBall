@@ -22,34 +22,44 @@ public class Checkerboard {    //棋盘
         for (Component com : components){
             if (com.getClass().equals(Circle.class))
                 isCollideCircle(com);
+            else if (com.getClass().equals(Square.class))
+                isCollideSquare(com);
         }
     }
 
     public void isCollideBorder() {   //处理小球撞到棋盘边界的情况
-        int ball_x = ball.centerPoint.x + ball.getX_speed();   //获取move一次后小球中心坐标
-        int ball_y = ball.centerPoint.y + ball.getY_speed();
+        int ball_x = ball.centerPoint.x;   //获取小球中心坐标
+        int ball_y = ball.centerPoint.y;
 
-        if (ball_x <= ball.getRadius())       //左边界
+        if (ball_x <= ball.getRadius()) {     //左边界
             ball.setX_speed(-ball.getX_speed());
-        if (ball_x >= length - ball.getRadius())    //右边界
+            ball.centerPoint.x = ball.getRadius();
+        }
+        if (ball_x >= length - ball.getRadius()) {  //右边界
             ball.setX_speed(-ball.getX_speed());
-        if (ball_y <= ball.getRadius())       //上边界
+            ball.centerPoint.x = length - ball.getRadius();
+        }
+        if (ball_y <= ball.getRadius()) {    //上边界
             ball.setY_speed(-ball.getY_speed());
-        if (ball_y >= width - ball.getRadius())     //下边界
+            ball.centerPoint.y = ball.getRadius();
+        }
+        if (ball_y >= width - ball.getRadius()) {    //下边界
             ball.setY_speed(-ball.getY_speed());
+            ball.centerPoint.y = width - ball.getRadius();
+        }
     }
 
     public void isCollideCircle(Component circle){
-        int ball_x = ball.centerPoint.x + ball.getX_speed();   //获取move一次后小球中心坐标
-        int ball_y = ball.centerPoint.y + ball.getY_speed();
+        int ball_x = ball.centerPoint.x ;   //获取小球中心坐标
+        int ball_y = ball.centerPoint.y ;
 
         double distance = distance(new Point(ball_x,ball_y),circle.centerPoint);
         if (distance <= ball.getRadius() + ((Circle) circle).getRadius()){
             double vx = ball.getX_speed();
             double vy = ball.getY_speed();  //获取小球x与y方向分速度
 
-            double cos_a = Math.abs(ball_y-circle.centerPoint.y)/distance;  //a为切线与水平线夹角
-            double sin_a = Math.abs(ball_x-circle.centerPoint.x)/distance;
+            double sin_a = Math.abs(ball_y-circle.centerPoint.y)/distance;  //a为切线与水平线夹角
+            double cos_a = Math.abs(ball_x-circle.centerPoint.x)/distance;
 
             double vxt = vx * cos_a;
             double vxn = vx * sin_a;
@@ -76,11 +86,25 @@ public class Checkerboard {    //棋盘
             double ySpeed2 = vyty - vyny;
 
 
-            Double new_vx = xSpeed1 + xSpeed2;
-            Double new_vy = ySpeed1 + ySpeed2;
-            ball.setX_speed(new_vx.intValue());
-            ball.setY_speed(new_vy.intValue());
+            double new_vx = xSpeed1 + xSpeed2;
+            double new_vy = ySpeed1 + ySpeed2;
+            ball.setX_speed((int) new_vx);
+            ball.setY_speed((int) new_vy);
         }
+    }
+
+    public void isCollideSquare(Component square){
+        int ball_x = ball.centerPoint.x ;   //获取小球中心坐标
+        int ball_y = ball.centerPoint.y ;
+        int length = ((Square)square).getLength();   //获取正方形边长
+
+        if (Math.abs(ball_x-square.centerPoint.x)<= ball.getRadius()+length/2 &&      //左边和右边
+                ball_y >= square.centerPoint.y-length/2-ball.getRadius() &&
+                ball_y <= square.centerPoint.y +length/2 + ball.getRadius())
+            ball.setX_speed(-ball.getX_speed());
+        if (Math.abs(ball_y-square.centerPoint.y)<= ball.getRadius()+length/2 &&     //上边和下边
+                ball_x> square.centerPoint.x - length/2 && ball_x < square.centerPoint.x + length/2)
+            ball.setY_speed(-ball.getY_speed());
     }
 
 }
