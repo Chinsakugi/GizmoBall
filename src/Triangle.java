@@ -65,7 +65,9 @@ public class Triangle extends Component{    //三角形组件
     }
 
     public void zoomIn() {  //缩小
-        int a = Math.abs((p3.x- p1.x)/2);
+        if (Math.abs(p1.x - p3.x)<40)
+            return;
+        int a = 40;   //一个格子宽度
         if (p1.y<p2.y){           //根据三角形的不同状态分不同的情况
             p1.y += a;
             p3.x -= a;
@@ -87,7 +89,7 @@ public class Triangle extends Component{    //三角形组件
     }
 
     public void zoomOut() { //放大
-        int a = Math.abs(p3.x- p1.x);  //直角边长
+        int a = 40;  //一个格子宽度
         if (p1.y<p2.y){    //根据三角形的不同状态分不同的情况,直角顶点坐标不变
             p1.y -= a;
             p3.x += a;

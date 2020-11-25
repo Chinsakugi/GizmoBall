@@ -22,15 +22,17 @@ public class Square extends Component{    //正方形
     }
 
     public void zoomIn() {  //缩小
-        length = length / 2;
-        centerPoint.x = centerPoint.x - length/2;
-        centerPoint.y = centerPoint.y - length/2;
+        if (length > 40) {
+            length = length - 40;
+            centerPoint.x = centerPoint.x - 20;
+            centerPoint.y = centerPoint.y - 20;
+        }
     }
 
     public void zoomOut() { //放大
-        centerPoint.x = centerPoint.x + length/2 ;  //中心点坐标变化
-        centerPoint.y = centerPoint.y + length/2;
-        length = length * 2;
+        centerPoint.x = centerPoint.x + 20;  //中心点坐标变化
+        centerPoint.y = centerPoint.y + 20;
+        length = length + 40;
     }
 
 }

@@ -24,6 +24,8 @@ public class Checkerboard {    //棋盘
                 isCollideCircle(com);
             else if (com.getClass().equals(Square.class))
                 isCollideSquare(com);
+            else if (com.getClass().equals(Triangle.class))
+                isCollideTriangle(com);
         }
     }
 
@@ -107,4 +109,7 @@ public class Checkerboard {    //棋盘
             ball.setY_speed(-ball.getY_speed());
     }
 
+    public void isCollideTriangle(Component triangle){
+
+    }
 }
