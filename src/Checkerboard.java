@@ -20,12 +20,12 @@ public class Checkerboard {    //棋盘
     public void isCollide() {   //判断球是否与其他组件相撞，如相撞则改变小球运动方向
         isCollideBorder();
         for (Component com : components){
-            if (com.getClass().equals(Circle.class))
-                isCollideCircle(com);
-            else if (com.getClass().equals(Square.class))
-                isCollideSquare(com);
-            else if (com.getClass().equals(Triangle.class))
-                isCollideTriangle(com);
+            if (com.type.equals("圆"))
+                isCollideCircle((Circle)com);
+            else if (com.type.equals("正方形"))
+                isCollideSquare((Square)com);
+            else if (com.type.equals("三角形"))
+                isCollideTriangle((Triangle)com);
         }
     }
 
@@ -51,12 +51,12 @@ public class Checkerboard {    //棋盘
         }
     }
 
-    public void isCollideCircle(Component circle){
+    public void isCollideCircle(Circle circle){   //处理小球与圆碰撞的情况
         int ball_x = ball.centerPoint.x ;   //获取小球中心坐标
         int ball_y = ball.centerPoint.y ;
 
         double distance = distance(new Point(ball_x,ball_y),circle.centerPoint);
-        if (distance <= ball.getRadius() + ((Circle) circle).getRadius()){
+        if (distance <= ball.getRadius() + circle.getRadius()){
             double vx = ball.getX_speed();
             double vy = ball.getY_speed();  //获取小球x与y方向分速度
 
@@ -95,10 +95,10 @@ public class Checkerboard {    //棋盘
         }
     }
 
-    public void isCollideSquare(Component square){
+    public void isCollideSquare(Square square){   //处理小球与正方形碰撞的情况
         int ball_x = ball.centerPoint.x ;   //获取小球中心坐标
         int ball_y = ball.centerPoint.y ;
-        int length = ((Square)square).getLength();   //获取正方形边长
+        int length = square.getLength();   //获取正方形边长
 
         if (Math.abs(ball_x-square.centerPoint.x)<= ball.getRadius()+length/2 &&      //左边和右边
                 ball_y >= square.centerPoint.y-length/2-ball.getRadius() &&
@@ -109,7 +109,67 @@ public class Checkerboard {    //棋盘
             ball.setY_speed(-ball.getY_speed());
     }
 
-    public void isCollideTriangle(Component triangle){
+    public boolean isCircleCollideLine(Point circleP, Point p1, Point p2){   //线段与圆的碰撞检测
+        double vx1 = circleP.x - p1.x;
+        double vy1 = circleP.y - p1.y;  //圆心与线段一端p1连线向量v1
+        double vx2 = p2.x - p1.x;
+        double vy2 = p2.y - p1.y;      //线段向量v2
+        double r = ball.getRadius();  //球的半径
 
+        double len = Math.sqrt(vx2*vx2+vy2+vy2);   //线段长度
+        vx2 /= len;
+        vy2 /= len;   //单位化v2
+
+        double u = vx1 * vx2 + vy1 * vy2;
+        double x0,y0;   //圆在线段上的投影点p
+        if (u<=0){  //p在p1左边
+            x0 = p1.x;
+            y0 = p1.y;
+        }
+        else if (u>=len){   //p在p2右边
+            x0 = p2.x;
+            y0 = p2.y;
+        }
+        else{
+            x0 = p1.x + vx2*u;
+            y0 = p1.y + vy2*u;
+        }
+        return (circleP.x - x0)*(circleP.x-x0)+(circleP.y-y0)*(circleP.y-y0) <= r*r;
+    }
+
+    public void isCollideTriangle(Triangle tri){   //处理小球与三角形相撞的情况
+        Point ballCenter = ball.centerPoint;  //小球中心点
+        Point p1 = tri.getP1();
+        Point p2 = tri.getP2();
+        Point p3 = tri.getP3();    //三角形三个点
+
+        if (isCircleCollideLine(ballCenter,p1,p2)){   //小球与三角形直角边p1-p2相撞
+            if (p1.x == p2.x)
+                ball.setX_speed(-ball.getX_speed());
+            if (p1.y == p2.y)
+                ball.setY_speed(-ball.getY_speed());
+            return;
+        }
+
+        if (isCircleCollideLine(ballCenter,p2,p3)){   //小球与三角形直角边p2-p3相撞
+            if (p2.y == p3.y)
+                ball.setY_speed(-ball.getY_speed());
+            if (p2.x == p3.x)
+                ball.setX_speed(-ball.getX_speed());
+            return;
+        }
+
+        if (isCircleCollideLine(ballCenter,p1,p3)){   //小球与三角形斜边p1-p3相撞
+            int xSpeed = ball.getX_speed();
+            int ySpeed = ball.getY_speed();   //球的x与y方向速度
+            if (p1.x == p2.x) {
+                ball.setX_speed(ySpeed);
+                ball.setY_speed(xSpeed);
+            }
+            if (p1.y == p2.y){
+                ball.setX_speed(-ySpeed);
+                ball.setY_speed(-xSpeed);
+            }
+        }
     }
 }
