@@ -12,6 +12,14 @@ public class Triangle extends Component{    //三角形组件
         this.type = "三角形";
     }
 
+    public Triangle(Point pCenter){
+        this.type = "三角形";
+        this.centerPoint = pCenter;
+        this.p1.setPoint(pCenter.x-20,pCenter.y-20);
+        this.p2.setPoint(pCenter.x-20,pCenter.x+20);
+        this.p3.setPoint(pCenter.x+20,pCenter.y+20);
+    }
+
     public Point getP1() {
         return p1;
     }

@@ -137,6 +137,23 @@ public class Checkerboard {    //棋盘
         return (circleP.x - x0)*(circleP.x-x0)+(circleP.y-y0)*(circleP.y-y0) <= r*r;
     }
 
+    public boolean isInTriangle(Point A, Point B, Point C, Point P){  //判断点是否在三角形内
+        int a = 0, b = 0, c = 0;
+
+        Point MA = new Point(P.x - A.x,P.y - A.y);
+        Point MB = new Point(P.x - B.x,P.y - B.y);
+        Point MC = new Point(P.x - C.x,P.y - C.y);
+
+        a = MA.x * MB.y - MA.y * MB.x;
+        b = MB.x * MC.y - MB.y * MC.x;
+        c = MC.x * MA.y - MC.y * MA.x;
+
+        if((a <= 0 && b <= 0 && c <= 0)||
+                (a > 0 && b > 0 && c > 0))
+            return true;
+        return false;
+    }
+
     public void isCollideTriangle(Triangle tri){   //处理小球与三角形相撞的情况
         Point ballCenter = ball.centerPoint;  //小球中心点
         Point p1 = tri.getP1();
