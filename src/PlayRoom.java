@@ -20,20 +20,26 @@ public class PlayRoom {
     }
 
     public void addComponent(Point pCenter, String type){    //向board中添加组件
-        if (type.equals("圆")){
-            Circle circle = new Circle(pCenter,20);
-            board.components.add(circle);
-        }
-        else if (type.equals("正方形")){
-            Square square = new Square(pCenter,40);
-            board.components.add(square);
-        }
-        else if (type.equals("三角形")){
-            Triangle tri = new Triangle(pCenter);
-            board.components.add(tri);
-        }
-        else if (type.equals("球")){
-            board.ball = new Ball(pCenter,20,0,10);
+        switch (type) {
+            case "圆":
+                Circle circle = new Circle(pCenter, 20);
+                board.components.add(circle);
+                break;
+            case "正方形":
+                Square square = new Square(pCenter, 40);
+                board.components.add(square);
+                break;
+            case "三角形":
+                Triangle tri = new Triangle(pCenter);
+                board.components.add(tri);
+                break;
+            case "球":
+                board.ball = new Ball(pCenter, 20, 0, 10);
+                break;
+            case "吸收器":
+                Absorber absorber = new Absorber(pCenter);
+                board.components.add(absorber);
+                break;
         }
     }
 
@@ -51,6 +57,12 @@ public class PlayRoom {
             }
             else if (com.type.equals("三角形")) {
                 if (board.isInTriangle(((Triangle) com).getP1(), ((Triangle) com).getP2(), ((Triangle) com).getP3(), p))
+                    return com;
+            }
+            else if (com.type.equals("吸收器")){
+                int halfLen = ((Absorber)com).length/2;
+                if ((p.x<=com.centerPoint.x+ halfLen)&&(p.x>=com.centerPoint.x- halfLen)&&(p.y<=com.centerPoint.y+ halfLen
+                )&&(p.y>=com.centerPoint.y- halfLen))
                     return com;
             }
         }

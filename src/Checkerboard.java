@@ -26,6 +26,8 @@ public class Checkerboard {    //棋盘
                 isCollideSquare((Square)com);
             else if (com.type.equals("三角形"))
                 isCollideTriangle((Triangle)com);
+            else if (com.type.equals("吸收器"))
+                isCollideAbsorber((Absorber)com);
         }
     }
 
@@ -98,14 +100,15 @@ public class Checkerboard {    //棋盘
     public void isCollideSquare(Square square){   //处理小球与正方形碰撞的情况
         int ball_x = ball.centerPoint.x ;   //获取小球中心坐标
         int ball_y = ball.centerPoint.y ;
-        int length = square.getLength();   //获取正方形边长
+        int len = square.getLength();   //获取正方形边长
 
-        if (Math.abs(ball_x-square.centerPoint.x)<= ball.getRadius()+length/2 &&      //左边和右边
-                ball_y >= square.centerPoint.y-length/2-ball.getRadius() &&
-                ball_y <= square.centerPoint.y +length/2 + ball.getRadius())
+        if (Math.abs(ball_x-square.centerPoint.x)<= ball.getRadius()+ len /2 &&      //左边和右边
+                ball_y >= square.centerPoint.y- len /2 &&
+                ball_y <= square.centerPoint.y + len /2 )
             ball.setX_speed(-ball.getX_speed());
-        if (Math.abs(ball_y-square.centerPoint.y)<= ball.getRadius()+length/2 &&     //上边和下边
-                ball_x> square.centerPoint.x - length/2 && ball_x < square.centerPoint.x + length/2)
+        else if (Math.abs(ball_y-square.centerPoint.y)<= ball.getRadius()+ len /2 &&     //上边和下边
+                ball_x> square.centerPoint.x - len /2 -ball.getRadius()&&
+                ball_x < square.centerPoint.x + len /2 + ball.getRadius())
             ball.setY_speed(-ball.getY_speed());
     }
 
@@ -188,5 +191,20 @@ public class Checkerboard {    //棋盘
                 ball.setY_speed(-xSpeed);
             }
         }
+    }
+
+    public void isCollideAbsorber(Absorber absorber){
+        int ball_x = ball.centerPoint.x ;   //获取小球中心坐标
+        int ball_y = ball.centerPoint.y ;
+        int len = absorber.length;
+
+        if (Math.abs(ball_x-absorber.centerPoint.x)<= ball.getRadius()+ len /2 &&      //左边和右边
+                ball_y >= absorber.centerPoint.y- len /2 &&
+                ball_y <= absorber.centerPoint.y + len /2)
+            ball =null;
+        else if (Math.abs(ball_y-absorber.centerPoint.y)<= ball.getRadius()+ len /2 &&     //上边和下边
+                ball_x> absorber.centerPoint.x - len /2 - ball.getRadius() &&
+                ball_x < absorber.centerPoint.x + len /2+ ball.getRadius())
+            ball = null;
     }
 }
