@@ -9,14 +9,14 @@ public class PlayRoom {
         Component com = checkCom(p);
         if (com == null)
             return;
-        if (mode == 1)
-            rotateCom();
-        if (mode == 2)
-            deleteComponent();
-        if (mode == 3)
-            zoomOutCom();
-        if (mode == 4)
-            zoomInCom();
+        if (mode == 1)      //旋转选中组件
+            rotateCom(com);
+        if (mode == 2)       //删除选中组件
+            deleteComponent(com);
+        if (mode == 3)       //放大选中组件
+            zoomOutCom(com);
+        if (mode == 4)       //缩小选中组件
+            zoomInCom(com);
     }
 
     public void addComponent(Point pCenter, String type){    //向board中添加组件
@@ -33,8 +33,7 @@ public class PlayRoom {
             board.components.add(tri);
         }
         else if (type.equals("球")){
-            Ball ball = new Ball(pCenter,20,0,10);
-            board.ball = ball;
+            board.ball = new Ball(pCenter,20,0,10);
         }
     }
 
@@ -42,36 +41,41 @@ public class PlayRoom {
         for (Component com : board.components){
             if (com.type.equals("圆")) {
                 if (board.distance(p,com.centerPoint)<=(((Circle)com).getRadius()))
-                    return (Circle)com;
+                    return com;
             }
             else if (com.type.equals("正方形")) {
                 int halfLen = ((Square)com).getLength()/2;
                 if ((p.x<=com.centerPoint.x+ halfLen)&&(p.x>=com.centerPoint.x- halfLen)&&(p.y<=com.centerPoint.y+ halfLen
                      )&&(p.y>=com.centerPoint.y- halfLen))
-                    return (Square)com;
+                    return com;
             }
             else if (com.type.equals("三角形")) {
                 if (board.isInTriangle(((Triangle) com).getP1(), ((Triangle) com).getP2(), ((Triangle) com).getP3(), p))
-                    return (Triangle)com;
+                    return com;
             }
         }
         return null;
     }
 
-    public void rotateCom(){   //旋转组件
-
+    public void rotateCom(Component component){   //旋转组件
+        component.rotate();
     }
 
-    public void zoomOutCom(){   //放大组件
-
+    public void zoomOutCom(Component component){   //放大组件
+        component.zoomOut();
     }
 
-    public void zoomInCom(){   //缩小组件
-
+    public void zoomInCom(Component component){   //缩小组件
+        component.zoomIn();
     }
 
-    public void deleteComponent(){        //删除组件
-
+    public void deleteComponent(Component component){        //删除组件
+        for (Component com : board.components){
+            if (com.equals(component)) {
+                board.components.remove(com);
+                break;
+            }
+        }
     }
 
 }

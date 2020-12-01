@@ -35,6 +35,18 @@ public class Ball extends Component{  //弹球
         this.y_speed = y_speed;
     }
 
+    public void rotate() {  //旋转
+    }
+
+    public void remove() {  //删除
+    }
+
+    public void zoomIn() {  //缩小
+    }
+
+    public void zoomOut() { //放大
+    }
+
     public void move(){  //小球移动一个时间单位
         this.centerPoint.setPoint(centerPoint.x+x_speed,centerPoint.y+y_speed);
     }
