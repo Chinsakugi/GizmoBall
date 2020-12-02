@@ -40,6 +40,10 @@ public class PlayRoom {
                 Absorber absorber = new Absorber(pCenter);
                 board.components.add(absorber);
                 break;
+            case  "直轨道":
+                StraightTrack straightTrack = new StraightTrack(pCenter);
+                board.components.add(straightTrack);
+                break;
         }
     }
 
@@ -61,6 +65,12 @@ public class PlayRoom {
             }
             else if (com.type.equals("吸收器")){
                 int halfLen = ((Absorber)com).length/2;
+                if ((p.x<=com.centerPoint.x+ halfLen)&&(p.x>=com.centerPoint.x- halfLen)&&(p.y<=com.centerPoint.y+ halfLen
+                )&&(p.y>=com.centerPoint.y- halfLen))
+                    return com;
+            }
+            else if (com.type.equals("直轨道")){
+                int halfLen = ((StraightTrack)com).getLength()/2;
                 if ((p.x<=com.centerPoint.x+ halfLen)&&(p.x>=com.centerPoint.x- halfLen)&&(p.y<=com.centerPoint.y+ halfLen
                 )&&(p.y>=com.centerPoint.y- halfLen))
                     return com;

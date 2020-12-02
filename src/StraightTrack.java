@@ -11,6 +11,10 @@ public class StraightTrack extends Component {  //直轨道
         outPoint2 = new Point(p.x, p.y+length/2);
     }
 
+    public int getLength() {
+        return length;
+    }
+
     public void setOpposedVertical(){
         this.isVertical = !isVertical;
     }
