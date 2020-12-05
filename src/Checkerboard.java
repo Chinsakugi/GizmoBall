@@ -30,6 +30,10 @@ public class Checkerboard {    //棋盘
                 isCollideAbsorber((Absorber) com);
             else if (com.type.equals("直轨道"))
                 isCollideStraightTrack((StraightTrack) com);
+            else if (com.type.equals("弯轨道"))
+                isCollideCuredTrack((CuredTrack)com);
+            else if (com.type.equals("挡板"))
+                isCollideBarrier((Barrier)com);
         }
     }
 
@@ -141,7 +145,7 @@ public class Checkerboard {    //棋盘
     }
 
     public boolean isInTriangle(Point A, Point B, Point C, Point P) {  //判断点是否在三角形内
-        int a = 0, b = 0, c = 0;
+        int a , b , c ;
 
         Point MA = new Point(P.x - A.x, P.y - A.y);
         Point MB = new Point(P.x - B.x, P.y - B.y);
@@ -227,5 +231,87 @@ public class Checkerboard {    //棋盘
             else
                 ball.setY_speed(-ball.getY_speed());
         }
+    }
+
+    public void isCollideCuredTrack(CuredTrack track){      //处理小球与弯轨道相撞的情况
+        int halfLen = track.getLength() / 2;
+        Point p1 = new Point(track.centerPoint.x-halfLen,track.centerPoint.y-halfLen);
+        Point p2 = new Point(track.centerPoint.x+halfLen,track.centerPoint.y-halfLen);
+        Point p3 = new Point(track.centerPoint.x-halfLen,track.centerPoint.y+halfLen);
+        Point p4 = new Point(track.centerPoint.x +halfLen,track.centerPoint.y+halfLen);
+        int state = track.getState();
+
+        if (isCircleCollideLine(ball.centerPoint,p1,p2)){
+            if (state == 1 || state ==4)
+                ball.setY_speed(-ball.getY_speed());
+            else if (state == 2){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setX_speed(-ball.getY_speed());
+                ball.setY_speed(0);
+            }
+            else if (state == 3) {
+                ball.centerPoint.setPoint(track.centerPoint.x, track.centerPoint.y);
+                ball.setX_speed(ball.getY_speed());
+                ball.setY_speed(0);
+            }
+            return;
+        }
+
+        if (isCircleCollideLine(ball.centerPoint, p2,p4)){
+            if (state == 1 || state == 2)
+                ball.setX_speed(-ball.getX_speed());
+            else if (state == 3){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setY_speed(ball.getX_speed());
+                ball.setX_speed(0);
+            }
+            else if (state == 4){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setY_speed(-ball.getX_speed());
+                ball.setX_speed(0);
+            }
+            return;
+        }
+
+        if (isCircleCollideLine(ball.centerPoint, p3,p4)){
+            if (state == 2 || state == 3)
+                ball.setY_speed(-ball.getY_speed());
+            else if (state == 1){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setX_speed(ball.getY_speed());
+                ball.setY_speed(0);
+            }
+            else if (state == 4){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setX_speed(-ball.getY_speed());
+                ball.setY_speed(0);
+            }
+            return;
+        }
+
+        if (isCircleCollideLine(ball.centerPoint, p1,p3)){
+            if (state == 3|| state == 4)
+                ball.setX_speed(-ball.getX_speed());
+            else if (state == 1){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setY_speed(ball.getX_speed());
+                ball.setX_speed(0);
+            }
+            else if (state == 2){
+                ball.centerPoint.setPoint(track.centerPoint.x,track.centerPoint.y);
+                ball.setY_speed(-ball.getX_speed());
+                ball.setX_speed(0);
+            }
+            return;
+        }
+    }
+
+    public void isCollideBarrier(Barrier barrier){    //处理小球与挡板相撞的情况
+        int halfLen = barrier.getLength();     //挡板长度的一半
+        int barrierX = barrier.centerPoint.x;
+        int barrierY = barrier.centerPoint.y;
+
+        if (isCircleCollideLine(ball.centerPoint,new Point(barrierX-halfLen,barrierY),new Point(barrierX+halfLen,barrierY)))
+            ball.setY_speed(-ball.getY_speed());
     }
 }

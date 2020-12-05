@@ -1,4 +1,4 @@
-public class PlayRoom {
+public class PlayRoom {    //控制器类
     Checkerboard board;
 
     public PlayRoom(){
@@ -44,6 +44,16 @@ public class PlayRoom {
                 StraightTrack straightTrack = new StraightTrack(pCenter);
                 board.components.add(straightTrack);
                 break;
+            case  "弯轨道":
+                CuredTrack track = new CuredTrack(pCenter);
+                board.components.add(track);
+                break;
+            case "挡板":
+                Barrier barrier = new Barrier(pCenter,80);
+                board.components.add(barrier);
+                break;
+            default:
+                break;
         }
     }
 
@@ -73,6 +83,17 @@ public class PlayRoom {
                 int halfLen = ((StraightTrack)com).getLength()/2;
                 if ((p.x<=com.centerPoint.x+ halfLen)&&(p.x>=com.centerPoint.x- halfLen)&&(p.y<=com.centerPoint.y+ halfLen
                 )&&(p.y>=com.centerPoint.y- halfLen))
+                    return com;
+            }
+            else if (com.type.equals("弯轨道")){
+                int halfLen = ((CuredTrack)com).getLength()/2;
+                if ((p.x<=com.centerPoint.x+ halfLen)&&(p.x>=com.centerPoint.x- halfLen)&&(p.y<=com.centerPoint.y+ halfLen
+                )&&(p.y>=com.centerPoint.y- halfLen))
+                    return com;
+            }
+            else if (com.type.equals("挡板")){
+                int halfLen = ((Barrier)com).getLength()/2;
+                if (p.x>=com.centerPoint.x-halfLen&&p.x<=com.centerPoint.x+halfLen&&p.y == com.centerPoint.y)
                     return com;
             }
         }

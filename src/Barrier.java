@@ -23,4 +23,7 @@ public class Barrier extends Component { //挡板
 
     public void zoomOut() { //放大
     }
+
+    public void rotate(){
+    }
 }
